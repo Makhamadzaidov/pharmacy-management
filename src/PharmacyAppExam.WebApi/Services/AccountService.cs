@@ -45,6 +45,7 @@ namespace PharmacyAppExam.WebApi.Services
                 if (exceptedCode.Equals(emailAddress.Code))
                 {
                     user.EmailConfirmed = true;
+                    await _userRepository.UpdateAsync(user);
                     await _dbContext.SaveChangesAsync();
 
                     return _authService.GenerateToken(user);
