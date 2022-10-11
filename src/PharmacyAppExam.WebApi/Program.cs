@@ -9,7 +9,7 @@ using Telegram.Bot;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string connectionString = builder.Configuration.GetConnectionString("PostgresDevelopmentDb");
+string connectionString = builder.Configuration.GetConnectionString("PostgresProductionDb");
 builder.Services.AddDbContext<AppDbContext>(option =>
 {
     option.UseNpgsql(connectionString);
@@ -37,7 +37,7 @@ builder.Services.AddSingleton<ITelegramBotClient, TelegramBotClient>(p =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
