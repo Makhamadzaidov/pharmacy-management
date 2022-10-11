@@ -25,13 +25,13 @@ namespace PharmacyAppExam.WebApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromForm]UserLoginModel user)
         {
-            return Ok(await _accountServcie.LoginAsync(user));
+            return Ok(new {Token = await _accountServcie.LoginAsync(user) });
         }
 
         [HttpPost("emailVerify")]
         public async Task<IActionResult> EmailVerify([FromForm]EmailAddress emailAddress)
         {
-            return Ok(await _accountServcie.EmailVerify(emailAddress));
+            return Ok(new { Token = await _accountServcie.EmailVerify(emailAddress) });
         }
     }
 }
