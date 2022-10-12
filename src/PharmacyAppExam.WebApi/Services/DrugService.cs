@@ -28,9 +28,9 @@ namespace PharmacyAppExam.WebApi.Services
         public async Task<DrugViewModel> CreateAsync(DrugCreateViewModel drugCreate)
         {
             var drug = _mapper.Map<Drug>(drugCreate);
-            await _drugRepository.CreateAsync(drug);
+            var drugView = await _drugRepository.CreateAsync(drug);
             await _dbContext.SaveChangesAsync();
-            return _mapper.Map<DrugViewModel>(drug);
+            return _mapper.Map<DrugViewModel>(drugView);
         }
 
         public async Task<bool> DeleteAsync(Expression<Func<Drug, bool>> expression)

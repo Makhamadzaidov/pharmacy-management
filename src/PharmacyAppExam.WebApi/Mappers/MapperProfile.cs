@@ -12,6 +12,7 @@ namespace PharmacyAppExam.WebApi.Mappers
         {
             CreateMap<User, UserCreateViewModel>().ReverseMap();
             CreateMap<Drug, DrugCreateViewModel>().ReverseMap();
+            CreateMap<Drug, DrugViewModel>().ReverseMap();
             CreateMap<Order, OrderCreateViewModel>().ReverseMap();
         }
     }
