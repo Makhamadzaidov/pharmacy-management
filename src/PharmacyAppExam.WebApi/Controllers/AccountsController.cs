@@ -31,7 +31,7 @@ namespace PharmacyAppExam.WebApi.Controllers
         [HttpPost("emailVerify")]
         public async Task<IActionResult> EmailVerify([FromForm]EmailAddress emailAddress)
         {
-            return Ok(new { Token = await _accountServcie.EmailVerify(emailAddress) });
+            return Ok(new { Token = await _accountServcie.EmailVerifyAsync(emailAddress) });
         }
     }
 }

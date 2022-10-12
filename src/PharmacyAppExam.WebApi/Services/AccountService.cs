@@ -33,7 +33,7 @@ namespace PharmacyAppExam.WebApi.Services
             _mapper = mapper;
             _userRepository = new UserRepository(_dbContext);
         }
-        public async Task<string> EmailVerify(EmailAddress emailAddress)
+        public async Task<string> EmailVerifyAsync(EmailAddress emailAddress)
         {
             var user = await _userRepository.GetAsync(user => user.Email == emailAddress.Email);
 
