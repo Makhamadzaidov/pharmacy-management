@@ -9,6 +9,7 @@ using PharmacyAppExam.WebApi.Repositories;
 using PharmacyAppExam.WebApi.Security;
 using PharmacyAppExam.WebApi.ViewModels.Users;
 using System.Net;
+using System.Security.Cryptography;
 
 namespace PharmacyAppExam.WebApi.Services
 {
@@ -85,7 +86,7 @@ namespace PharmacyAppExam.WebApi.Services
             await _userRepository.CreateAsync(user);
             await _dbContext.SaveChangesAsync();
 
-            var code = new Random().Next(1000, 9999).ToString();
+            var code = RandomNumberGenerator.GetInt32(1000, 9999).ToString();
             _cache.Set(userCreateViewModel.Email, code, TimeSpan.FromMinutes(10));
 
             await _emailService.SendAsync(userCreateViewModel.Email, code);
