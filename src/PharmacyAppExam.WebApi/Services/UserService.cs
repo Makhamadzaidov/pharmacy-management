@@ -5,6 +5,7 @@ using PharmacyAppExam.WebApi.DbContexts;
 using PharmacyAppExam.WebApi.Interfaces.IRepositories;
 using PharmacyAppExam.WebApi.Interfaces.Services;
 using PharmacyAppExam.WebApi.Models;
+using PharmacyAppExam.WebApi.Repositories;
 using PharmacyAppExam.WebApi.Security;
 using PharmacyAppExam.WebApi.ViewModels.Users;
 using System.Linq.Expressions;
@@ -19,10 +20,10 @@ namespace PharmacyAppExam.WebApi.Services
         private readonly IMapper _mapper;
         private readonly IFileService _fileService;
 
-        public UserService(IUserRepository userRepository, AppDbContext dbContext, IMapper mapper, IFileService fileService)
+        public UserService(AppDbContext dbContext, IMapper mapper, IFileService fileService)
         {
-            _userRepository = userRepository;
             _dbContext = dbContext;
+            _userRepository = new UserRepository(_dbContext);
             _mapper = mapper;
             _fileService = fileService;
         }
