@@ -68,8 +68,10 @@ namespace PharmacyAppExam.WebApi.Services
             if (drug is null)
                 throw new StatusCodeException(HttpStatusCode.NotFound, "Drug not found");
 
-            drug = _mapper.Map<Drug>(drugUpdate);
-            await _drugRepository.UpdateAsync(drug);
+            var drugMap = _mapper.Map<Drug>(drugUpdate);
+            drugMap.Id = drug.Id;
+
+            await _drugRepository.UpdateAsync(drugMap);
             await _dbContext.SaveChangesAsync();
 
             return true;
