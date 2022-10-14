@@ -49,6 +49,8 @@ HttpContextHelper.Accessor = app.Services.GetRequiredService<IHttpContextAccesso
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 
+app.UseStaticFiles();
+
 app.UseAuthentication();
 
 app.UseAuthorization();
