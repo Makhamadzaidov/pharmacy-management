@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PharmacyAppExam.WebApi.Commons.Exceptions;
+using PharmacyAppExam.WebApi.Commons.Extensions;
 using PharmacyAppExam.WebApi.Commons.Utils;
 using PharmacyAppExam.WebApi.DbContexts;
 using PharmacyAppExam.WebApi.Interfaces.IRepositories;
@@ -42,9 +43,19 @@ namespace PharmacyAppExam.WebApi.Services
             return true;
         }
 
-        public Task<IEnumerable<UserViewModel>> GetAllAsync(Expression<Func<User, bool>>? expression = null, PaginationParams? @params = null)
+        public async Task<IEnumerable<UserViewModel>> GetAllAsync(Expression<Func<User, bool>>? expression = null, 
+            PaginationParams? @params = null)
         {
-            throw new NotImplementedException();
+            var users = _userRepository.GetAll(expression).ToPagedAsEnumerable(@params);
+            var userViews = new List<UserViewModel>();
+
+            foreach (var user in users)
+            {
+                var item = _mapper.Map<UserViewModel>(user);
+                item.ImageUrl = "https://localhost:7066/" + user.ImagePath;
+                userViews.Add(item);
+            }
+            return userViews;
         }
 
         public async Task<UserViewModel?> GetAsync(Expression<Func<User, bool>> expression)
@@ -54,7 +65,9 @@ namespace PharmacyAppExam.WebApi.Services
             if (user is null)
                 throw new StatusCodeException(HttpStatusCode.NotFound, "User not found!");
 
-            return _mapper.Map<UserViewModel>(user);
+            var userViewModel = _mapper.Map<UserViewModel>(user);
+            userViewModel.ImageUrl = "https://localhost:7066/" + user.ImagePath;
+            return userViewModel;
         }
 
         public async Task<UserViewModel> UpdateAsync(long id, UserCreateViewModel userCreateViewModel)
