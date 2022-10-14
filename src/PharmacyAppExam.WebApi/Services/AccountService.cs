@@ -72,13 +72,14 @@ namespace PharmacyAppExam.WebApi.Services
 
         public async Task<bool> RegistrAsync(UserCreateViewModel userCreateViewModel)
         {
-            User user = _mapper.Map<User>(userCreateViewModel);
             var checkUser = await _userRepository.GetAsync(user => user.Email == userCreateViewModel.Email);
 
             if (checkUser is not null)
                 throw new StatusCodeException(HttpStatusCode.Conflict, "This email already exists");
 
+            User user = _mapper.Map<User>(userCreateViewModel);
             user.ImagePath = await _fileService.SaveImageAsync(userCreateViewModel.Image);
+
             var hasherResult = PasswordHasher.Hash(userCreateViewModel.Password);
             user.PasswordHash = hasherResult.Hash;
             user.Salt = hasherResult.Salt;
