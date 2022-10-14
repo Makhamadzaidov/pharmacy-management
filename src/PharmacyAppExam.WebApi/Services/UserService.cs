@@ -78,22 +78,21 @@ namespace PharmacyAppExam.WebApi.Services
                 throw new StatusCodeException(HttpStatusCode.NotFound, "User not found!");
 
             await _fileService.DeleteImageAsync(entity.ImagePath);
-            var imagePath = await _fileService.SaveImageAsync(userCreateViewModel.Image);
-            var res = PasswordHasher.Hash(userCreateViewModel.Password);
-            var hash = res.Hash;
-            var salt = res.Salt;
 
-            var userMap = _mapper.Map<User>(userCreateViewModel);
+            User user = _mapper.Map<User>(userCreateViewModel);
+            var hasherResult = PasswordHasher.Hash(userCreateViewModel.Password);
 
-            userMap.Id = entity.Id;
-            userMap.Salt = entity.Salt;
-            userMap.ImagePath = imagePath;
-            userMap.PasswordHash = hash;
+            user.Id = id;
+            user.PasswordHash = hasherResult.Hash;
+            user.Salt = hasherResult.Salt;
+            user.ImagePath = await _fileService.SaveImageAsync(userCreateViewModel.Image);
 
-            await _userRepository.UpdateAsync(userMap);
+            await _userRepository.UpdateAsync(user);
             await _dbContext.SaveChangesAsync();
 
-            return _mapper.Map<UserViewModel>(userMap);
+            var userViewModel = _mapper.Map<UserViewModel>(user);
+            userViewModel.ImageUrl = user.ImagePath;
+            return userViewModel;
         }
     }
 }
