@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using PharmacyAppExam.WebApi.Commons.Middlewares;
+using PharmacyAppExam.WebApi.Configurations;
 using PharmacyAppExam.WebApi.DbContexts;
 using PharmacyAppExam.WebApi.Helpers;
 using PharmacyAppExam.WebApi.Interfaces.Services;
 using PharmacyAppExam.WebApi.Mappers;
 using PharmacyAppExam.WebApi.Services;
-using Telegram.Bot;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,10 +33,11 @@ builder.Services.AddAutoMapper(typeof(MapperProfile));
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddMemoryCache();
 
-var botToken = builder.Configuration.GetSection("TelegramBotToken")["Production"];
-builder.Services.AddSingleton<ITelegramBotClient, TelegramBotClient>(p =>
-    new TelegramBotClient(botToken));
+builder.Services.ConfigureJwtAuthorize(builder.Configuration);
+builder.Services.ConfigureSwaggerAuthorize(builder.Configuration);
 
+builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
+loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
 
 var app = builder.Build();
 
