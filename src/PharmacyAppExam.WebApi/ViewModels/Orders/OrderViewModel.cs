@@ -6,12 +6,12 @@
 
         public string DrugName { get; set; } = String.Empty;
 
-        public string UserName { get; set; } = String.Empty;
+        public string UserFullName { get; set; } = String.Empty;
 
-        public int Quantiry { get; set; }
-
-        public string CardNumber { get; set; } = String.Empty;
+        public int Quantity { get; set; }
 
         public string PaymentType { get; set; } = String.Empty;
+
+        public string CardNumber { get; set; } = String.Empty;
     }
 }
