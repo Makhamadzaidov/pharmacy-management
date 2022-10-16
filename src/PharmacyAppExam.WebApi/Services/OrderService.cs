@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PharmacyAppExam.WebApi.Commons.Exceptions;
 using PharmacyAppExam.WebApi.Commons.Extensions;
 using PharmacyAppExam.WebApi.Commons.Utils;
@@ -64,21 +65,36 @@ namespace PharmacyAppExam.WebApi.Services
             return true;
         }
 
-        public Task<IEnumerable<OrderViewModel>> GetAllAsync(Expression<Func<Order, bool>>? expression = null, 
+        public async Task<IEnumerable<OrderViewModel>> GetAllAsync(Expression<Func<Order, bool>>? expression = null, 
             PaginationParams? @params = null)
         {
-            var orders = _orderRepository.GetAll(expression).ToPagedAsEnumerable(@params).Select(order => _mapper.Map<OrderViewModel>(order));
-            return Task.FromResult(orders);   
+            var orders = _orderRepository.GetAll(expression).Include(p => p.User).Include(p => p.Drug).ToPagedAsEnumerable(@params);
+            return _mapper.Map<IEnumerable<OrderViewModel>>(orders);
         }
 
-        public async Task<OrderViewModel?> GetAsync(Expression<Func<Order, bool>> expression)
+        public async Task<OrderViewModel?> GetAsync(long userId, Expression<Func<Order, bool>> expression)
         {
             var order = await _orderRepository.GetAsync(expression);
 
             if (order is null)
                 throw new StatusCodeException(HttpStatusCode.NotFound, "Order not found");
 
-            return _mapper.Map<OrderViewModel>(order);
+            var drug = await _drugRepository.GetAsync(drug => drug.Id == order.DrugId);
+
+            if (drug is null)
+                throw new StatusCodeException(HttpStatusCode.NotFound, "Drug not found");
+
+            var user = await _userRepository.GetAsync(user => user.Id == userId);
+
+            if (user is null)
+                throw new StatusCodeException(HttpStatusCode.NotFound, "User not found");
+
+            var orderViewModel = _mapper.Map<OrderViewModel>(order);
+            orderViewModel.DrugName = drug.Name;
+            orderViewModel.UserFullName = user.FirstName + " " + user.LastName;
+            orderViewModel.TotalSum = order.Quantity * drug.Price;
+
+            return orderViewModel;
         }
 
         public async Task<bool> UpdateAsync(long id, OrderCreateViewModel orderCreateViewModel)
