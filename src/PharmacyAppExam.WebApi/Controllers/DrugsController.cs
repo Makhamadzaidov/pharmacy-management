@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PharmacyAppExam.WebApi.Commons.Utils;
 using PharmacyAppExam.WebApi.Interfaces.Services;
@@ -16,31 +17,32 @@ namespace PharmacyAppExam.WebApi.Controllers
         {
             _drugService = drugService;
         }
-        [HttpGet]
+
+        [HttpGet, AllowAnonymous]
         public async Task<IActionResult> GetAllAsync([FromQuery] PaginationParams @params)
         {
             return Ok(await _drugService.GetAllAsync(expression: null, @params));
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateAsync([FromForm]DrugCreateViewModel drugCreateViewModel)
         {
             return Ok(await _drugService.CreateAsync(drugCreateViewModel));
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAsync(long id)
         {
             return Ok(await _drugService.DeleteAsync(drug => drug.Id == id));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), AllowAnonymous]
         public async Task<IActionResult> GetAsync(long id)
         {
             return Ok(await _drugService.GetAsync(drug => drug.Id == id));
         }
 
-        [HttpPut]
+        [HttpPut, Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateAsync(long id, [FromForm]DrugCreateViewModel drugCreateViewModel)
         {
             return Ok(await _drugService.UpdateAsync(id, drugCreateViewModel));
