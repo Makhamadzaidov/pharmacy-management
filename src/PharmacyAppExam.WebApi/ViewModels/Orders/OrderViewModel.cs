@@ -10,6 +10,8 @@
 
         public int Quantity { get; set; }
 
+        public int TotalSum { get; set; }
+
         public string PaymentType { get; set; } = String.Empty;
 
         public string CardNumber { get; set; } = String.Empty;
