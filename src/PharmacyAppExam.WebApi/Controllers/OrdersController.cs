@@ -25,8 +25,8 @@ namespace PharmacyAppExam.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromForm]OrderCreateViewModel orderCreateViewModel)
         {
-            long id = long.Parse(HttpContext.User.FindFirst("Id")!.Value ?? "0");
-            return Ok(await _orderService.CreateAsync(id, orderCreateViewModel));
+            long userId = long.Parse(HttpContext.User.FindFirst("Id")!.Value);
+            return Ok(await _orderService.CreateAsync(userId, orderCreateViewModel));
         }
 
         [HttpDelete("{id}")]
@@ -38,7 +38,8 @@ namespace PharmacyAppExam.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAsync(long id)
         {
-            return Ok(await _orderService.GetAsync(order => order.Id == id));
+            long userId = long.Parse(HttpContext.User.FindFirst("Id")!.Value);
+            return Ok(await _orderService.GetAsync(userId, order => order.Id == id));
         }
 
         [HttpPut]
