@@ -10,7 +10,7 @@ namespace PharmacyAppExam.WebApi.Interfaces.Services
         Task<OrderViewModel> CreateAsync(long userid, OrderCreateViewModel orderCreateViewModel);
         Task<bool> UpdateAsync(long Id, OrderCreateViewModel orderCreateViewModel);
         Task<bool> DeleteAsync(Expression<Func<Order, bool>> expression);
-        Task<OrderViewModel?> GetAsync(Expression<Func<Order, bool>> expression);
+        Task<OrderViewModel?> GetAsync(long userId, Expression<Func<Order, bool>> expression);
         Task<IEnumerable<OrderViewModel>> GetAllAsync(Expression<Func<Order, bool>>? expression = null,
             PaginationParams? @params = null);
     }
