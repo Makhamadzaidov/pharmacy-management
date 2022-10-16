@@ -11,7 +11,7 @@ namespace PharmacyAppExam.WebApi.Interfaces.Services
         Task<bool> UpdateAsync(long id, DrugCreateViewModel drugUpdate);
         Task<bool> DeleteAsync(Expression<Func<Drug, bool>> expression);
         Task<DrugViewModel?> GetAsync(Expression<Func<Drug, bool>> expression);
-        Task<IEnumerable<DrugViewModel>> GetAllAsync(Expression<Func<Drug, bool>>? expression = null, 
+        Task<IEnumerable<DrugViewModel>> GetAllAsync(Expression<Func<Drug, bool>>? expression = null,
             PaginationParams? @params = null);
     }
 }

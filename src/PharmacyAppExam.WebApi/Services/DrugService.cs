@@ -8,7 +8,6 @@ using PharmacyAppExam.WebApi.Interfaces.Services;
 using PharmacyAppExam.WebApi.Models;
 using PharmacyAppExam.WebApi.Repositories;
 using PharmacyAppExam.WebApi.ViewModels.Drugs;
-using PharmacyAppExam.WebApi.ViewModels.Users;
 using System.Linq.Expressions;
 using System.Net;
 

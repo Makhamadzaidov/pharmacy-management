@@ -32,7 +32,7 @@ namespace PharmacyAppExam.WebApi.Commons.Middlewares
         {
             httpContext.Response.StatusCode = (int)statusCodeException.StatusCode;
             httpContext.Response.ContentType = "application/json";
-            string json = JsonConvert.SerializeObject( 
+            string json = JsonConvert.SerializeObject(
                 new { StatusCode = statusCodeException.StatusCode, Message = statusCodeException.Message });
 
             await httpContext.Response.WriteAsync(json);
@@ -40,7 +40,7 @@ namespace PharmacyAppExam.WebApi.Commons.Middlewares
         public async Task HandlerOtherAsync(Exception exception, HttpContext httpContext)
         {
             httpContext.Response.StatusCode = 500;
-            httpContext.Response.ContentType= "application/json";
+            httpContext.Response.ContentType = "application/json";
             string json = JsonConvert.SerializeObject(
                 new { StatusCode = HttpStatusCode.InternalServerError, Message = exception.Message });
 

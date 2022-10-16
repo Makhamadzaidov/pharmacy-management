@@ -23,7 +23,7 @@ namespace PharmacyAppExam.WebApi.Commons.Attributes
 
                 if (result.IsValid is false)
                     return new ValidationResult(result.Message);
-                else 
+                else
                     return ValidationResult.Success;
             }
         }

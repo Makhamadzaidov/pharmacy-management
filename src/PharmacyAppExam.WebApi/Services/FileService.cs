@@ -1,6 +1,5 @@
 ﻿using PharmacyAppExam.WebApi.Helpers;
 using PharmacyAppExam.WebApi.Interfaces.Services;
-using System.Runtime.Intrinsics.X86;
 
 namespace PharmacyAppExam.WebApi.Services
 {

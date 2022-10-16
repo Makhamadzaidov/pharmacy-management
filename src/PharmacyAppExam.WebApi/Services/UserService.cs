@@ -43,7 +43,7 @@ namespace PharmacyAppExam.WebApi.Services
             return true;
         }
 
-        public async Task<IEnumerable<UserViewModel>> GetAllAsync(Expression<Func<User, bool>>? expression = null, 
+        public async Task<IEnumerable<UserViewModel>> GetAllAsync(Expression<Func<User, bool>>? expression = null,
             PaginationParams? @params = null)
         {
             var users = _userRepository.GetAll(expression).ToPagedAsEnumerable(@params);
@@ -74,7 +74,7 @@ namespace PharmacyAppExam.WebApi.Services
         {
             var entity = await _userRepository.GetAsync(user => user.Id == id);
 
-            if (entity is null) 
+            if (entity is null)
                 throw new StatusCodeException(HttpStatusCode.NotFound, "User not found!");
 
             await _fileService.DeleteImageAsync(entity.ImagePath);

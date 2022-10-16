@@ -2,7 +2,7 @@
 {
     public enum PaymentType
     {
-        ByCard = 1, 
+        ByCard = 1,
         ByCash
     }
 }

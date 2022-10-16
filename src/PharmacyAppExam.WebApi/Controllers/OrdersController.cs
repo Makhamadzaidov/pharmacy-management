@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PharmacyAppExam.WebApi.Commons.Utils;
 using PharmacyAppExam.WebApi.Interfaces.Services;
 using PharmacyAppExam.WebApi.ViewModels.Orders;
@@ -17,13 +16,13 @@ namespace PharmacyAppExam.WebApi.Controllers
             _orderService = orderService;
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync([FromQuery]PaginationParams @params)
+        public async Task<IActionResult> GetAllAsync([FromQuery] PaginationParams @params)
         {
             return Ok(await _orderService.GetAllAsync(expression: null, @params));
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromForm]OrderCreateViewModel orderCreateViewModel)
+        public async Task<IActionResult> CreateAsync([FromForm] OrderCreateViewModel orderCreateViewModel)
         {
             long userId = long.Parse(HttpContext.User.FindFirst("Id")!.Value);
             return Ok(await _orderService.CreateAsync(userId, orderCreateViewModel));
@@ -40,12 +39,6 @@ namespace PharmacyAppExam.WebApi.Controllers
         {
             long userId = long.Parse(HttpContext.User.FindFirst("Id")!.Value);
             return Ok(await _orderService.GetAsync(userId, order => order.Id == id));
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateAsync(long id, [FromForm]OrderCreateViewModel orderCreateViewModel)
-        {
-            return Ok(await _orderService.UpdateAsync(id, orderCreateViewModel));
         }
     }
 }

@@ -65,7 +65,7 @@ namespace PharmacyAppExam.WebApi.Services
             return true;
         }
 
-        public async Task<IEnumerable<OrderViewModel>> GetAllAsync(Expression<Func<Order, bool>>? expression = null, 
+        public async Task<IEnumerable<OrderViewModel>> GetAllAsync(Expression<Func<Order, bool>>? expression = null,
             PaginationParams? @params = null)
         {
             var orders = _orderRepository.GetAll(expression).Include(p => p.User).Include(p => p.Drug).ToPagedAsEnumerable(@params);
@@ -95,21 +95,6 @@ namespace PharmacyAppExam.WebApi.Services
             orderViewModel.TotalSum = order.Quantity * drug.Price;
 
             return orderViewModel;
-        }
-
-        public async Task<bool> UpdateAsync(long id, OrderCreateViewModel orderCreateViewModel)
-        {
-            var checkorder = await _orderRepository.GetAsync(order => order.Id == id);
-
-            if (checkorder is null)
-                throw new StatusCodeException(HttpStatusCode.NotFound, "Order not found");
-
-            var order = _mapper.Map<Order>(orderCreateViewModel);
-            order.Id = order.Id;
-            await _orderRepository.UpdateAsync(order);
-            await _dbContext.SaveChangesAsync();
-
-            return true;
         }
     }
 }

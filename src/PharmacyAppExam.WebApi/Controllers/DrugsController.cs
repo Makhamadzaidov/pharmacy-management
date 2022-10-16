@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PharmacyAppExam.WebApi.Commons.Utils;
 using PharmacyAppExam.WebApi.Interfaces.Services;
@@ -25,7 +24,7 @@ namespace PharmacyAppExam.WebApi.Controllers
         }
 
         [HttpPost, Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateAsync([FromForm]DrugCreateViewModel drugCreateViewModel)
+        public async Task<IActionResult> CreateAsync([FromForm] DrugCreateViewModel drugCreateViewModel)
         {
             return Ok(await _drugService.CreateAsync(drugCreateViewModel));
         }
@@ -43,7 +42,7 @@ namespace PharmacyAppExam.WebApi.Controllers
         }
 
         [HttpPut, Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateAsync(long id, [FromForm]DrugCreateViewModel drugCreateViewModel)
+        public async Task<IActionResult> UpdateAsync(long id, [FromForm] DrugCreateViewModel drugCreateViewModel)
         {
             return Ok(await _drugService.UpdateAsync(id, drugCreateViewModel));
         }
