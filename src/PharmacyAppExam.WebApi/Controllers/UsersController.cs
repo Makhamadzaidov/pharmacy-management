@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PharmacyAppExam.WebApi.Commons.Utils;
 using PharmacyAppExam.WebApi.Interfaces.Services;
@@ -39,6 +40,14 @@ namespace PharmacyAppExam.WebApi.Controllers
         public async Task<IActionResult> UpdateAsync(int id, [FromForm] UserCreateViewModel userCreateViewModel)
         {
             return Ok(await _userService.UpdateAsync(id, userCreateViewModel));
+        }
+
+        [HttpGet("Info"), Authorize(Roles = "User")]
+        public async Task<IActionResult> GetInfoAsync()
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id")!.Value ?? "0");
+
+            return Ok(await _userService.GetAsync(user => user.Id == id));
         }
     }
 }
