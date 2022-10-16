@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PharmacyAppExam.WebApi.Commons.Utils;
 using PharmacyAppExam.WebApi.Interfaces.Services;
@@ -18,27 +17,23 @@ namespace PharmacyAppExam.WebApi.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
+        [HttpGet, AllowAnonymous]
         public async Task<IActionResult> GetAllAsync([FromQuery] PaginationParams @params)
         {
             return Ok(await _userService.GetAllAsync(expression: null, @params));
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(long id)
+        [HttpDelete("{id}"), Authorize(Roles = "User, Admin")]
+        public async Task<IActionResult> DeleteAsync()
         {
+            long id = long.Parse(HttpContext.User.FindFirst("Id")!.Value ?? "0");
             return Ok(await _userService.DeleteAsync(user => user.Id == id));
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(long id)
+        [HttpPut, Authorize(Roles = "User")]
+        public async Task<IActionResult> UpdateAsync([FromForm] UserCreateViewModel userCreateViewModel)
         {
-            return Ok(await _userService.GetAsync(user => user.Id == id));
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateAsync(int id, [FromForm] UserCreateViewModel userCreateViewModel)
-        {
+            long id = long.Parse(HttpContext.User.FindFirst("Id")!.Value ?? "0");
             return Ok(await _userService.UpdateAsync(id, userCreateViewModel));
         }
 
