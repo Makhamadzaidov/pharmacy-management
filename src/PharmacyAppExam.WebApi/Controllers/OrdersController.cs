@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PharmacyAppExam.WebApi.Commons.Utils;
+using PharmacyAppExam.WebApi.Interfaces.Services;
 using PharmacyAppExam.WebApi.ViewModels.Orders;
 
 namespace PharmacyAppExam.WebApi.Controllers
@@ -9,34 +10,41 @@ namespace PharmacyAppExam.WebApi.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
+        private readonly IOrderService _orderService;
+
+        public OrdersController(IOrderService orderService)
+        {
+            _orderService = orderService;
+        }
         [HttpGet]
         public async Task<IActionResult> GetAllAsync([FromQuery]PaginationParams @params)
         {
-            return Ok();
+            return Ok(await _orderService.GetAllAsync(expression: null, @params));
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromForm]OrderCreateViewModel orderCreateViewModel)
         {
-            return Ok();
+            long id = long.Parse(HttpContext.User.FindFirst("Id")!.Value ?? "0");
+            return Ok(await _orderService.CreateAsync(id, orderCreateViewModel));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(long id)
         {
-            return Ok();
+            return Ok(await _orderService.DeleteAsync(order => order.Id == id));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAsync(long id)
         {
-            return Ok();
+            return Ok(await _orderService.GetAsync(order => order.Id == id));
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateAsync(long id, [FromForm]OrderCreateViewModel orderCreateViewModel)
         {
-            return Ok();
+            return Ok(await _orderService.UpdateAsync(id, orderCreateViewModel));
         }
     }
 }
