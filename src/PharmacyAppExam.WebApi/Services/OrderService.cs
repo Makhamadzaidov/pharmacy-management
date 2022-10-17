@@ -39,8 +39,11 @@ namespace PharmacyAppExam.WebApi.Services
 
             var entity = _mapper.Map<Order>(orderCreateViewModel);
             entity.UserId = userId;
-
             var order = await _orderRepository.CreateAsync(entity);
+            var drug = await _drugRepository.GetAsync(drug => drug.Id == orderCreateViewModel.DrugId);
+            drug!.Quantity -= orderCreateViewModel.Quantity;
+
+            await _drugRepository.UpdateAsync(drug);
             await _dbContext.SaveChangesAsync();
 
             var orderViewModel = _mapper.Map<OrderViewModel>(order);
@@ -48,6 +51,7 @@ namespace PharmacyAppExam.WebApi.Services
 
             var user = (await _userRepository.GetAsync(user => user.Id == userId))!;
             orderViewModel.UserFullName = user.LastName + " " + user.FirstName;
+            orderViewModel.TotalSum = order.Quantity * drug.Price;
 
             return orderViewModel;
         }
@@ -69,7 +73,15 @@ namespace PharmacyAppExam.WebApi.Services
             PaginationParams? @params = null)
         {
             var orders = _orderRepository.GetAll(expression).Include(p => p.User).Include(p => p.Drug).ToPagedAsEnumerable(@params);
-            return _mapper.Map<IEnumerable<OrderViewModel>>(orders);
+            var orderViewModels = new List<OrderViewModel>();
+
+            foreach (var order in orders)
+            {
+                var item = _mapper.Map<OrderViewModel>(order);
+                orderViewModels.Add(item);
+            }
+
+            return orderViewModels;
         }
 
         public async Task<OrderViewModel?> GetAsync(long userId, Expression<Func<Order, bool>> expression)
