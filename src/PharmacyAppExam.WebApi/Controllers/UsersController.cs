@@ -26,21 +26,21 @@ namespace PharmacyAppExam.WebApi.Controllers
         [HttpDelete("{id}"), Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> DeleteAsync()
         {
-            long id = long.Parse(HttpContext.User.FindFirst("Id")!.Value ?? "0");
+            long id = long.Parse(HttpContext.User.FindFirst("Id")?.Value ?? "0");
             return Ok(await _userService.DeleteAsync(user => user.Id == id));
         }
 
         [HttpPut, Authorize(Roles = "User")]
         public async Task<IActionResult> UpdateAsync([FromForm] UserCreateViewModel userCreateViewModel)
         {
-            long id = long.Parse(HttpContext.User.FindFirst("Id")!.Value ?? "0");
+            long id = long.Parse(HttpContext.User.FindFirst("Id")?.Value ?? "0");
             return Ok(await _userService.UpdateAsync(id, userCreateViewModel));
         }
 
         [HttpGet("Info"), Authorize(Roles = "User")]
         public async Task<IActionResult> GetInfoAsync()
         {
-            int id = int.Parse(HttpContext.User.FindFirst("Id")!.Value ?? "0");
+            int id = int.Parse(HttpContext.User.FindFirst("Id")?.Value ?? "0");
 
             return Ok(await _userService.GetAsync(user => user.Id == id));
         }
