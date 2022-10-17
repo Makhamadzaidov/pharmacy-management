@@ -17,6 +17,13 @@ namespace PharmacyAppExam.WebApi.Mappers
             CreateMap<Order, OrderCreateViewModel>().ReverseMap();
             CreateMap<Order, OrderViewModel>().ReverseMap();
             CreateMap<IEnumerable<OrderViewModel>, IEnumerable<Order>>();
+            CreateMap<Order, OrderViewModel>()
+                .ForMember(dto => dto.UserFullName,
+                    expression => expression.MapFrom(entity => entity.User.FirstName + " " + entity.User.LastName))
+                .ForMember(dto => dto.DrugName,
+                    expression => expression.MapFrom(entity => entity.Drug.Name))
+                .ForMember(dto => dto.TotalSum,
+                    expression => expression.MapFrom(entity => entity.Drug.Price * entity.Quantity));
         }
     }
 }
