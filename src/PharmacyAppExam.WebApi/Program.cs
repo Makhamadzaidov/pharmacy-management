@@ -22,6 +22,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(cors =>
+{
+    cors.AddPolicy("CorsPolicy", accesses =>
+        accesses.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
+
 
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -51,6 +57,8 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 HttpContextHelper.Accessor = app.Services.GetRequiredService<IHttpContextAccessor>();
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
+
+app.UseCors("CorsPolicy");
 
 app.UseStaticFiles();
 
