@@ -89,7 +89,7 @@ namespace PharmacyAppExam.WebApi.Services
             user.Id = id;
             user.PasswordHash = hasherResult.Hash;
             user.Salt = hasherResult.Salt;
-            user.ImagePath = await _fileService.SaveImageAsync(userCreateViewModel.Image);
+            user.ImagePath = "https://pharmacy-app-management.herokuapp.com//" + await _fileService.SaveImageAsync(userCreateViewModel.Image);
 
             await _userRepository.UpdateAsync(user);
             await _dbContext.SaveChangesAsync();
