@@ -23,7 +23,7 @@ namespace PharmacyAppExam.WebApi.Controllers
             return Ok(await _drugService.GetAllAsync(expression: null, @params));
         }
 
-        [HttpPost, Authorize(Roles = "Admin")]
+        [HttpPost, AllowAnonymous]//, Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateAsync([FromForm] DrugCreateViewModel drugCreateViewModel)
         {
             return Ok(await _drugService.CreateAsync(drugCreateViewModel));
