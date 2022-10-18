@@ -28,6 +28,7 @@ namespace PharmacyAppExam.WebApi.Services
         {
             var drug = _mapper.Map<Drug>(drugCreate);
             var drugView = await _drugRepository.CreateAsync(drug);
+
             await _dbContext.SaveChangesAsync();
             return _mapper.Map<DrugViewModel>(drugView);
         }
@@ -69,6 +70,7 @@ namespace PharmacyAppExam.WebApi.Services
 
             var drugMap = _mapper.Map<Drug>(drugUpdate);
             drugMap.Id = drug.Id;
+            drugMap.ImagePath = drugUpdate.ImageUrl;
 
             await _drugRepository.UpdateAsync(drugMap);
             await _dbContext.SaveChangesAsync();
