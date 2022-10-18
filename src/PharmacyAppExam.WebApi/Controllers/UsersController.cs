@@ -30,7 +30,7 @@ namespace PharmacyAppExam.WebApi.Controllers
             return Ok(await _userService.DeleteAsync(user => user.Id == id));
         }
 
-        [HttpPut, Authorize(Roles = "User")]
+        [HttpPut, Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> UpdateAsync([FromForm] UserCreateViewModel userCreateViewModel)
         {
             long id = long.Parse(HttpContext.User.FindFirst("Id")?.Value ?? "0");
