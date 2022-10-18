@@ -10,9 +10,7 @@ namespace PharmacyAppExam.WebApi.Mappers
     {
         public MapperProfile()
         {
-            CreateMap<User, UserCreateViewModel>()
-                .ForMember(dto => dto.Image,
-                    expression => expression.MapFrom(entity => entity.ImagePath)).ReverseMap();
+            CreateMap<User, UserCreateViewModel>().ReverseMap();
             CreateMap<User, UserViewModel>()
                 .ForMember(dto => dto.ImageUrl,
                     expression => expression.MapFrom(entity => "https://pharmacy-app-management.herokuapp.com//" + entity.ImagePath)).ReverseMap();
