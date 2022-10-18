@@ -12,7 +12,7 @@ using PharmacyAppExam.WebApi.DbContexts;
 namespace PharmacyAppExam.WebApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221009170416_InitialCreate")]
+    [Migration("20221017201208_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,6 +34,14 @@ namespace PharmacyAppExam.WebApi.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
