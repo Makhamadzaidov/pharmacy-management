@@ -58,7 +58,6 @@ namespace PharmacyAppExam.WebApi.Services
             foreach (var user in users)
             {
                 var item = _mapper.Map<UserViewModel>(user);
-                item.ImageUrl = "https://pharmacy-app-management.herokuapp.com//" + user.ImagePath;
                 userViews.Add(item);
             }
             return userViews;
@@ -72,7 +71,6 @@ namespace PharmacyAppExam.WebApi.Services
                 throw new StatusCodeException(HttpStatusCode.NotFound, "User not found!");
 
             var userViewModel = _mapper.Map<UserViewModel>(user);
-            userViewModel.ImageUrl = "https://pharmacy-app-management.herokuapp.com//" + user.ImagePath;
             return userViewModel;
         }
 
@@ -91,7 +89,7 @@ namespace PharmacyAppExam.WebApi.Services
             user.Id = id;
             user.PasswordHash = hasherResult.Hash;
             user.Salt = hasherResult.Salt;
-            user.ImagePath = "https://pharmacy-app-management.herokuapp.com//" + await _fileService.SaveImageAsync(userCreateViewModel.Image);
+            user.ImagePath = await _fileService.SaveImageAsync(userCreateViewModel.Image);
 
             await _userRepository.UpdateAsync(user);
             await _dbContext.SaveChangesAsync();
