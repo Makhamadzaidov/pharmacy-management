@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 using PharmacyAppExam.WebApi.Commons.Exceptions;
 using PharmacyAppExam.WebApi.Commons.Extensions;
 using PharmacyAppExam.WebApi.Commons.Utils;
@@ -11,6 +12,7 @@ using PharmacyAppExam.WebApi.Security;
 using PharmacyAppExam.WebApi.ViewModels.Users;
 using System.Linq.Expressions;
 using System.Net;
+using System.Security.Cryptography;
 
 namespace PharmacyAppExam.WebApi.Services
 {
@@ -18,14 +20,18 @@ namespace PharmacyAppExam.WebApi.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly AppDbContext _dbContext;
+        private readonly IMemoryCache _cache;
+        private readonly IEmailService _emailService;
         private readonly IMapper _mapper;
         private readonly IFileService _fileService;
 
-        public UserService(AppDbContext dbContext, IMapper mapper, IFileService fileService)
+        public UserService(AppDbContext dbContext, IMapper mapper, IFileService fileService, IMemoryCache cache, IEmailService emailService)
         {
             _dbContext = dbContext;
             _userRepository = new UserRepository(_dbContext);
             _mapper = mapper;
+            _cache = cache;
+            _emailService = emailService;
             _fileService = fileService;
         }
 
@@ -89,6 +95,10 @@ namespace PharmacyAppExam.WebApi.Services
 
             await _userRepository.UpdateAsync(user);
             await _dbContext.SaveChangesAsync();
+
+            var code = RandomNumberGenerator.GetInt32(1000, 9999).ToString();
+            _cache.Set(userCreateViewModel.Email, code, TimeSpan.FromMinutes(10));
+            await _emailService.SendAsync(userCreateViewModel.Email, code);
 
             var userViewModel = _mapper.Map<UserViewModel>(user);
             userViewModel.ImageUrl = user.ImagePath;

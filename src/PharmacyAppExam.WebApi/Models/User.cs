@@ -14,7 +14,7 @@ namespace PharmacyAppExam.WebApi.Models
 
         public Gender Gender { get; set; }
 
-        public UserRole UserRole { get; set; } = UserRole.User;
+        public UserRole UserRole { get; set; } = UserRole.Admin;
 
         public string ImagePath { get; set; } = String.Empty;
 
