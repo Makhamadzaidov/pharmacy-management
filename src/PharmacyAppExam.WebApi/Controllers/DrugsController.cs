@@ -29,7 +29,7 @@ namespace PharmacyAppExam.WebApi.Controllers
             return Ok(await _drugService.CreateAsync(drugCreateViewModel));
         }
 
-        [HttpDelete("{id}"), Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]//, Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAsync(long id)
         {
             return Ok(await _drugService.DeleteAsync(drug => drug.Id == id));
@@ -41,7 +41,7 @@ namespace PharmacyAppExam.WebApi.Controllers
             return Ok(await _drugService.GetAsync(drug => drug.Id == id));
         }
 
-        [HttpPut, Authorize(Roles = "Admin")]
+        [HttpPut]//, Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateAsync(long id, [FromForm] DrugCreateViewModel drugCreateViewModel)
         {
             return Ok(await _drugService.UpdateAsync(id, drugCreateViewModel));
