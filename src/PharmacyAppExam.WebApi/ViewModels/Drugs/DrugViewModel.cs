@@ -13,7 +13,7 @@ namespace PharmacyAppExam.WebApi.ViewModels.Drugs
         [JsonPropertyName("description")]
         public string Description { get; set; } = String.Empty;
 
-        [JsonPropertyName("imageurl")]
+        [JsonPropertyName("imageUrl")]
         public string ImageUrl { get; set; } = String.Empty;
 
         [JsonPropertyName("price")]
