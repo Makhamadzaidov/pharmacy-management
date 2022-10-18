@@ -16,7 +16,7 @@ namespace PharmacyAppExam.WebApi.ViewModels.Drugs
 
 
         [Required(ErrorMessage = "ImageUrl is required field")]
-        [JsonPropertyName("imageurl")]
+        [JsonPropertyName("imageUrl")]
         public string ImageUrl { get; set; } = String.Empty;
 
 
