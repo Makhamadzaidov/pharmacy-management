@@ -10,8 +10,12 @@ namespace PharmacyAppExam.WebApi.Mappers
     {
         public MapperProfile()
         {
-            CreateMap<User, UserCreateViewModel>().ReverseMap();
-            CreateMap<User, UserViewModel>().ReverseMap();
+            CreateMap<User, UserCreateViewModel>()
+                .ForMember(dto => dto.Image,
+                    expression => expression.MapFrom(entity => entity.ImagePath)).ReverseMap();
+            CreateMap<User, UserViewModel>()
+                .ForMember(dto => dto.ImageUrl,
+                    expression => expression.MapFrom(entity => entity.ImagePath)).ReverseMap();
 
             CreateMap<Drug, DrugCreateViewModel>()
                 .ForMember(dto => dto.ImageUrl,
