@@ -24,7 +24,7 @@ namespace PharmacyAppExam.WebApi.Controllers
         }
 
         [HttpPost, AllowAnonymous]//, Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateAsync([FromForm] DrugCreateViewModel drugCreateViewModel)
+        public async Task<IActionResult> CreateAsync([FromBody] DrugCreateViewModel drugCreateViewModel)
         {
             return Ok(await _drugService.CreateAsync(drugCreateViewModel));
         }
@@ -42,7 +42,7 @@ namespace PharmacyAppExam.WebApi.Controllers
         }
 
         [HttpPut]//, Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateAsync(long id, [FromForm] DrugCreateViewModel drugCreateViewModel)
+        public async Task<IActionResult> UpdateAsync(long id, [FromBody] DrugCreateViewModel drugCreateViewModel)
         {
             return Ok(await _drugService.UpdateAsync(id, drugCreateViewModel));
         }
