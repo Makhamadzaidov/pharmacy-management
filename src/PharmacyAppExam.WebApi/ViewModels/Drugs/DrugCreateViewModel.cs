@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace PharmacyAppExam.WebApi.ViewModels.Drugs
 {
