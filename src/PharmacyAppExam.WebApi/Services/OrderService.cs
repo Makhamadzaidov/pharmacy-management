@@ -41,7 +41,7 @@ namespace PharmacyAppExam.WebApi.Services
             entity.UserId = userId;
             var order = await _orderRepository.CreateAsync(entity);
             var drug = await _drugRepository.GetAsync(drug => drug.Id == orderCreateViewModel.DrugId);
-            
+
             var count = drug!.Quantity - orderCreateViewModel.Quantity;
             if (count > 0)
                 drug!.Quantity -= orderCreateViewModel.Quantity;

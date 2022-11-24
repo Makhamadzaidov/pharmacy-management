@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace PharmacyAppExam.WebApi.ViewModels.Drugs
+﻿namespace PharmacyAppExam.WebApi.ViewModels.Drugs
 {
     public class DrugViewModel
     {
