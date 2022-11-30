@@ -37,7 +37,7 @@ namespace PharmacyAppExam.WebApi.Controllers
             return Ok(await _userService.UpdateAsync(id, userCreateViewModel));
         }
 
-        [HttpGet("Info"), Authorize(Roles = "User")]
+        [HttpGet("Info"), Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> GetInfoAsync()
         {
             int id = int.Parse(HttpContext.User.FindFirst("Id")?.Value ?? "0");
