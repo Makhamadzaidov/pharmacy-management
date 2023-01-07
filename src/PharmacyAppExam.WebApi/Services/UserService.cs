@@ -89,6 +89,7 @@ namespace PharmacyAppExam.WebApi.Services
             user.Id = id;
             user.PasswordHash = hasherResult.Hash;
             user.Salt = hasherResult.Salt;
+            user.EmailConfirmed = true;
             user.ImagePath = await _fileService.SaveImageAsync(userCreateViewModel.Image);
 
             await _userRepository.UpdateAsync(user);
